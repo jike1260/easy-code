@@ -227,8 +227,11 @@
                 <version>1.0.0</version>
                 <configuration>
                     <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
-                    <dockerDirectory>src/main/resources/docker</dockerDirectory>
+                    <!-- Dockerfile所在路径 当前是指向项目要路径 -->
+                    <dockerDirectory>${project.basedir}</dockerDirectory>
+                    <!-- docker容器地址 -->
                     <dockerHost>http://192.168.121.11:2375</dockerHost>
+                    <!-- cope本地项目到docker容器指定目录 可在Dockerfile中指定 -->
                     <resources>
                         <resource>
                             <targetPath>/</targetPath>
