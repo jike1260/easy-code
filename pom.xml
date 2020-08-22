@@ -26,6 +26,8 @@
         <swagger3.version>3.0.0</swagger3.version>
         <lombok.version>1.18.12</lombok.version>
         <mqttv3.version>1.2.5</mqttv3.version>
+        <!-- docker镜像 -->
+        <docker.image.prefix>easy-code</docker.image.prefix>
     </properties>
 
     <!-- 版本统一控制 -->
@@ -216,6 +218,25 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+
+            <!-- docker插件 -->
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>1.0.0</version>
+                <configuration>
+                    <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
+                    <dockerDirectory>src/main/resources/docker</dockerDirectory>
+                    <dockerHost>http://192.168.121.11:2375</dockerHost>
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                </configuration>
             </plugin>
         </plugins>
     </build>
