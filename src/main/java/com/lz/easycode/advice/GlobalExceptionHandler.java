@@ -1,6 +1,7 @@
 package com.lz.easycode.advice;
 
 
+import com.lz.easycode.commons.R;
 import com.lz.easycode.exception.BaseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,46 +32,16 @@ public class GlobalExceptionHandler {
 	 * @Date 2020/8/8 17:23
 	 **/
 	@ExceptionHandler(Exception.class) // 所有的异常都是Exception子类
-	public Object defaultErrorHandler(HttpServletRequest request, Exception e) {
-		class ErrorInfo {
-			private String code ;
-			private String message ;
-			private String url ;
-			public String getCode() {
-				return code;
-			}
-			public void setCode(String code) {
-				this.code = code;
-			}
-			public String getMessage() {
-				return message;
-			}
-			public void setMessage(String message) {
-				this.message = message;
-			}
-			public String getUrl() {
-				return url;
-			}
-			public void setUrl(String url) {
-				this.url = url;
-			}
-		}
-		ErrorInfo info = new ErrorInfo() ;
+	public R defaultErrorHandler(HttpServletRequest request, Exception e) {
 		//判断是否是自定义异常
 		if(e instanceof BaseException){
 			BaseException baseException = (BaseException) e;
-			// 标记一个错误信息类型
-			info.setCode(baseException.getExceptionEnums().getEcode());
-			info.setMessage(baseException.getExceptionEnums().getEmsg());
-			info.setUrl(request.getRequestURL().toString());
             logger.error("============================ 自定义异常 ============================");
+			return R.build(baseException.getExceptionEnums().getEcode(),baseException.getExceptionEnums().getEmsg(),request.getRequestURL());
 		}else {
-			info.setCode(Integer.toString(HttpStatus.INTERNAL_SERVER_ERROR.value()));
-			info.setMessage(e.getMessage());
-			info.setUrl(request.getRequestURL().toString());
             logger.error("============================ 系统异常 ============================");
+            return R.build(HttpStatus.INTERNAL_SERVER_ERROR.value(),e.getMessage(),request.getRequestURL());
 		}
-		return info ;
 	}
 
 /*	public static final String DEFAULT_ERROR_VIEW = "error"; // 定义错误显示页，error.html

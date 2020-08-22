@@ -14,7 +14,7 @@ import java.io.Serializable;
 @Data
 public class R implements Serializable {
 
-    private Integer code;
+    private int code;
 
     private String message;
 
@@ -32,7 +32,7 @@ public class R implements Serializable {
         return new R(data);
     }
 
-    public static R build(Integer code, String message, Object data){
+    public static R build(int code, String message, Object data){
         return new R(code, message, data);
     }
 
@@ -45,7 +45,7 @@ public class R implements Serializable {
         this.data = data;
     }
 
-    public R(Integer code, String message, Object data) {
+    public R(int code, String message, Object data) {
         this.code = code;
         this.message = message;
         this.data = data;
